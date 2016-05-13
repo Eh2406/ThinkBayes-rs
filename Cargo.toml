@@ -1,0 +1,6 @@
+[package]
+name = "ThinkBayes"
+version = "0.1.0"
+authors = ["Finkelman <finkelman@semcog.org>"]
+
+[dependencies]
