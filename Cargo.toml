@@ -1,6 +1,9 @@
 [package]
-name = "ThinkBayes"
+name = "think_bayes"
 version = "0.1.0"
 authors = ["Finkelman <finkelman@semcog.org>"]
 
 [dependencies]
+
+[dev-dependencies]
+approx = "0.1.0"
