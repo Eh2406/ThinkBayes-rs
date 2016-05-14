@@ -7,3 +7,4 @@ authors = ["Finkelman <finkelman@semcog.org>"]
 
 [dev-dependencies]
 approx = "0.1.0"
+quickcheck = "0.2.27"

@@ -11,6 +11,8 @@
 #[cfg(test)]
 #[macro_use]
 extern crate approx;
+#[cfg(test)]
+extern crate quickcheck;
 
 mod utils;
 pub use utils::*;

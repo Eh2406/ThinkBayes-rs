@@ -47,6 +47,18 @@ mod tests_odds {
     fn odds_in_the_mid2() {
         assert_ulps_eq!{odds(0.25), 1.0 / 3.0, max_ulps = 4}
     }
+    #[test]
+    fn odds_probability_quickcheck() {
+        use quickcheck::{quickcheck, TestResult};
+        fn test(p: f64) -> TestResult {
+            if p < 0.0 || p >= 1.0 {
+                TestResult::discard()
+            } else {
+                TestResult::from_bool(ulps_eq!{probability(odds(p)), p, max_ulps = 4})
+            }
+        }
+        quickcheck(test as fn(f64) -> TestResult);
+    }
 }
 
 
