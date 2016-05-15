@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Finkelman <finkelman@semcog.org>"]
 
 [dependencies]
+fnv = "1.0"
 
 [dev-dependencies]
 approx = "0.1.0"

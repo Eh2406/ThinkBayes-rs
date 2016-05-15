@@ -7,6 +7,7 @@
 
 // thinkbayes.py has all the code in one big file. So it cane be shared and imported in python.
 // Cargo means that it is straightforward to share split up, so I will do that.
+extern crate fnv;
 
 #[cfg(test)]
 #[macro_use]
@@ -16,3 +17,6 @@ extern crate quickcheck;
 
 mod utils;
 pub use utils::*;
+
+mod pmf;
+pub use pmf::*;
