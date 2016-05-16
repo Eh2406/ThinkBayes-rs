@@ -3,11 +3,19 @@ ThinkBayes-rs
 
 This is a unofficial rewrite of [Allen B. Downey's ThinkBayes](https://github.com/AllenDowney/ThinkBayes) in to [Rust](rust-lang.org).
 
-This has several goals:
+This project has two goals:
 
-1. To be a clean port of ThinkBayes.py. So that the book can easily be followed in Rust code.
-2. To be Rusty, demonstrating and using good Rust practises.
+1. To be a clean port of ThinkBayes.py; so that the book can easily be followed in Rust code.
+2. To be Rusty, demonstrating and using good Rust practise.
 
-These goals do not always align, but we will jump off that bridge when we come to it.
+Issues, Pull Requests, comments, spelling corrections, and questions all welcome.
 
-Issues, Pull Request, Comments, spelling mistakes, and Questions all welcome.
+The Progress So Far:
+-----
+
+These goals do not always align, but we will jump off that bridge when we come to it. So here goes:
+
+###### 2.1  Distributions ######
+Code from this section ended up as tests in src/pmf.rs
+###### 2.2  The cookie problem ######
+Code from this section (cookie.py) ended up in tests/cookie.rs

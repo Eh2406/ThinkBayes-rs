@@ -112,19 +112,4 @@ mod tests_pmf {
         assert_ulps_eq!{pmf.prob(&"the", 0.0), 0.25, max_ulps = 4}
         assert_ulps_eq!{pmf.prob(&"foo", 0.0), 0.125, max_ulps = 4}
     }
-    #[test]
-    fn pmf_cookie_problem() {
-        // from 2.2
-        let mut pmf = Pmf::new();
-        pmf.set("Bowl 1", 0.5);
-        pmf.set("Bowl 2", 0.5);
-        pmf.mult("Bowl 1", 0.75);
-        pmf.mult("Bowl 2", 0.5);
-        assert_ulps_eq!{pmf.prob(&"Bowl 1", 0.0), 0.375, max_ulps = 4}
-        assert_ulps_eq!{pmf.prob(&"Bowl 2", 0.0), 0.25, max_ulps = 4}
-        assert_ulps_eq!{pmf.normalize(1.0), 0.625, max_ulps = 4}
-        assert_ulps_eq!{pmf.prob(&"Bowl 1", 0.0), 0.6, max_ulps = 4}
-        assert_ulps_eq!{pmf.prob(&"Bowl 2", 0.0), 0.4, max_ulps = 4}
-
-    }
 }
