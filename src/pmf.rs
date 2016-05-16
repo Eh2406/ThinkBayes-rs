@@ -16,13 +16,21 @@ use std::borrow::Borrow;
 ///
 /// Values can be any hashable type; probabilities are floating-point.
 /// Pmfs are not necessarily normalized.
-pub struct Pmf<V: Eq + Hash> {
+pub struct Pmf<V: Eq + Hash + Copy> {
     d: HashMap<V, f64, BuildHasherDefault<FnvHasher>>,
 }
 
-impl<V: Eq + Hash> Pmf<V> {
+impl<V: Eq + Hash + Copy> Pmf<V> {
     pub fn new() -> Pmf<V> {
         Pmf { d: HashMap::default() }
+    }
+
+    /// Gets an unsorted sequence of values.
+    /// Note: one source of confusion is that the keys of this
+    /// dictionary are the values of the Hist/Pmf, and the
+    /// values of the dictionary are frequencies/probabilities.
+    pub fn values(&self) -> Vec<V> {
+        self.d.keys().cloned().collect()
     }
 
     /// Returns the total of the frequencies/probabilities in the map.

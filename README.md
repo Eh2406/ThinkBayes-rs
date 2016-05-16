@@ -14,8 +14,10 @@ The Progress So Far:
 -----
 
 These goals do not always align, but we will jump off that bridge when we come to it. So here goes:
-
+##### Chapter 2  Computational Statistics #####
 ###### 2.1  Distributions ######
 Code from this section ended up as tests in src/pmf.rs
 ###### 2.2  The cookie problem ######
 Code from this section (cookie.py) ended up in tests/cookie.rs
+###### 2.3  The Bayesian framework ######
+Rust dose not (yet 1.8.0) have class inheritance. Rust has traits or composition for code reuse. tests/cookie2.rs demonstrates using composition to extend Pmf.
