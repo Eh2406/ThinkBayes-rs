@@ -21,3 +21,5 @@ Code from this section ended up as tests in src/pmf.rs
 Code from this section (cookie.py) ended up in tests/cookie.rs
 ###### 2.3  The Bayesian framework ######
 Rust dose not (yet 1.8.0) have class inheritance. Rust has traits or composition for code reuse. tests/cookie2.rs demonstrates using composition to extend Pmf.
+###### 2.4  The Monty Hall problem ######
+test/monty.rs also uses composition.

@@ -15,8 +15,8 @@ extern crate approx;
 #[cfg(test)]
 extern crate quickcheck;
 
-mod utils;
+pub mod utils;
 pub use utils::*;
 
-mod pmf;
+pub mod pmf;
 pub use pmf::*;

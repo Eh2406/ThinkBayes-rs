@@ -7,7 +7,7 @@
 // License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 
 extern crate think_bayes;
-use think_bayes::Pmf;
+use think_bayes::pmf::*;
 #[macro_use]
 extern crate approx;
 
@@ -61,13 +61,13 @@ impl<V: Eq + Hash + Copy> Cookie<V> {
 
 #[test]
 fn pmf_cookie_composition() {
-    let mut bowl1: HashMap<_, f64, BuildHasherDefault<FnvHasher>> = HashMap::default();
+    let mut bowl1 = HashMap::default();
     bowl1.insert("vanilla", 0.75);
     bowl1.insert("chocolate", 0.25);
-    let mut bowl2: HashMap<_, f64, BuildHasherDefault<FnvHasher>> = HashMap::default();
+    let mut bowl2 = HashMap::default();
     bowl2.insert("vanilla", 0.5);
     bowl2.insert("chocolate", 0.5);
-    let mut mixes: HashMap<_, _, BuildHasherDefault<FnvHasher>> = HashMap::default();
+    let mut mixes = HashMap::default();
     mixes.insert("Bowl 1", bowl1);
     mixes.insert("Bowl 2", bowl2);
 
