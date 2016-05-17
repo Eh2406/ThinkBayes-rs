@@ -20,3 +20,6 @@ pub use utils::*;
 
 pub mod pmf;
 pub use pmf::*;
+
+pub mod suite;
+pub use suite::*;

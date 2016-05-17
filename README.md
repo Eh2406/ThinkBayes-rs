@@ -23,3 +23,17 @@ Code from this section (cookie.py) ended up in tests/cookie.rs
 Rust dose not (yet 1.8.0) have class inheritance. Rust has traits or composition for code reuse. tests/cookie2.rs demonstrates using composition to extend Pmf.
 ###### 2.4  The Monty Hall problem ######
 test/monty.rs also uses composition.
+###### 2.5  Encapsulating the framework ######
+The "Template method pattern" and "abstract type" are perfect for trait inheritance.
+So we have a trait in std/suite.rs that need:
+- fn likelihood(&self, data, hypo) -> f64,
+- fn get_mut_pmf(&mut self) -> &mut Pmf,
+And uses them to provide default implementation of:
+- fn update(&mut self, data),
+Code from this section (monty2.py) ended up in tests/monty2.rs
+###### 2.6  The M&M problem ######
+Code from this section (m_and_m.py) ended up in tests/m_and_m.rs
+
+##### Chapter 3  Estimation #####
+###### 3.1  The dice problem ######
+Code from this section (dice.py) ended up in tests/dice.rs
