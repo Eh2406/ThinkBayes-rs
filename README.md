@@ -28,9 +28,12 @@ The "Template method pattern" and "abstract type" are perfect for trait inherita
 So we have a trait in std/suite.rs that need:
 - fn likelihood(&self, data, hypo) -> f64,
 - fn get_mut_pmf(&mut self) -> &mut Pmf,
+
 And uses them to provide default implementation of:
 - fn update(&mut self, data),
+
 Code from this section (monty2.py) ended up in tests/monty2.rs
+
 ###### 2.6  The M&M problem ######
 Code from this section (m_and_m.py) ended up in tests/m_and_m.rs
 
