@@ -96,6 +96,15 @@ impl<V: Eq + Hash + Copy> Pmf<V> {
     }
 }
 
+impl<V: Eq + Hash + Copy + Into<f64>> Pmf<V> {
+    /// Computes the mean of a PMF if V can be converted into f64.
+    /// Returns:
+    ///     float mean
+    pub fn mean(&self) -> f64 {
+        self.d.iter().fold(0.0, |s, (&x, &p)| s + x.into() * p)
+    }
+}
+
 #[cfg(test)]
 mod tests_pmf {
     use super::*;
