@@ -42,5 +42,5 @@ Code from this section (m_and_m.py) ended up in tests/m_and_m.rs
 Code from this section (dice.py) ended up in tests/dice.rs
 ###### 3.2  The locomotive problem and 3.3  What about that prior? ######
 Code from this section (train.py) ended up in tests/train.rs
-###### 3.4  An alternative prior ######
+###### 3.4  An alternative prior and 3.5  Credible intervals ######
 Code from this section tests/train2.rs. This is the code from the book, not from train3.py.

@@ -61,21 +61,33 @@ fn suite_train_power_law() {
     assert_ulps_eq!{suite.get_pdf().prob(&500, 0.0), 0.0002530552154716191, max_ulps = 4}
     assert_ulps_eq!{suite.get_pdf().prob(&1000, 0.0), 0.00006326380386790477, max_ulps = 4}
     assert_ulps_eq!{suite.get_pdf().mean(), 178.54735317971586, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 62}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 559}
     suite.update(&30);
     suite.update(&90);
     assert_ulps_eq!{suite.get_pdf().mean(), 133.2752313750311, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 91}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 242}
 
     let mut suite = Train::new(1..501, 1.0);
     suite.update(&60);
     assert_ulps_eq!{suite.get_pdf().mean(), 143.8123198209791, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 62}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 365}
     suite.update(&30);
     suite.update(&90);
     assert_ulps_eq!{suite.get_pdf().mean(), 130.70846986255995, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 91}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 235}
 
     let mut suite = Train::new(1..2001, 1.0);
     suite.update(&60);
     assert_ulps_eq!{suite.get_pdf().mean(), 215.5689255061552, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 63}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 760}
     suite.update(&30);
     suite.update(&90);
     assert_ulps_eq!{suite.get_pdf().mean(), 133.9974630807312, max_ulps = 4}
+    assert_eq!{*suite.get_pdf().percentile(5.0), 91}
+    assert_eq!{*suite.get_pdf().percentile(95.0), 243}
 }

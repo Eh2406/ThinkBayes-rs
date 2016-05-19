@@ -11,6 +11,7 @@ use std::hash::Hash;
 use std::hash::BuildHasherDefault;
 use fnv::FnvHasher;
 use std::borrow::Borrow;
+use std::cmp::Ord;
 
 /// Represents a probability mass function.
 ///
@@ -102,6 +103,27 @@ impl<V: Eq + Hash + Copy + Into<f64>> Pmf<V> {
     ///     float mean
     pub fn mean(&self) -> f64 {
         self.d.iter().fold(0.0, |s, (&x, &p)| s + x.into() * p)
+    }
+}
+
+impl<V: Eq + Hash + Copy + Ord> Pmf<V> {
+    /// Computes a percentile of a given Pmf.
+    ///     Note: this is not super efficient.  If you are planning
+    ///     to compute more than a few percentiles, compute the Cdf.
+    ///     percentage: float 0-100
+    ///     returns: value from the Pmf
+    pub fn percentile(&self, percentage: f64) -> &V {
+        let p = percentage / 100.0;
+        let mut total = 0.0;
+        let mut items: Vec<(&V, &f64)> = self.d.iter().collect();
+        items.sort_by_key(|&(&val, _)| val);
+        for &(val, &prob) in &items {
+            total += prob;
+            if total >= p {
+                return val;
+            }
+        }
+        items.last().expect("percentile of empty Pmf").0
     }
 }
 
