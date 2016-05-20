@@ -23,3 +23,6 @@ pub use pmf::*;
 
 pub mod suite;
 pub use suite::*;
+
+pub mod cdf;
+pub use cdf::*;

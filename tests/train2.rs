@@ -9,6 +9,7 @@
 extern crate think_bayes;
 use think_bayes::pmf::*;
 use think_bayes::suite::*;
+use think_bayes::cdf::*;
 #[macro_use]
 extern crate approx;
 
@@ -68,6 +69,9 @@ fn suite_train_power_law() {
     assert_ulps_eq!{suite.get_pdf().mean(), 133.2752313750311, max_ulps = 4}
     assert_eq!{*suite.get_pdf().percentile(5.0), 91}
     assert_eq!{*suite.get_pdf().percentile(95.0), 242}
+    let cdf: Cdf<_> = suite.get_pdf().into();
+    assert_eq!{cdf.percentile(5.0), 91}
+    assert_eq!{cdf.percentile(95.0), 242}
 
     let mut suite = Train::new(1..501, 1.0);
     suite.update(&60);
@@ -79,6 +83,9 @@ fn suite_train_power_law() {
     assert_ulps_eq!{suite.get_pdf().mean(), 130.70846986255995, max_ulps = 4}
     assert_eq!{*suite.get_pdf().percentile(5.0), 91}
     assert_eq!{*suite.get_pdf().percentile(95.0), 235}
+    let cdf: Cdf<_> = suite.get_pdf().into();
+    assert_eq!{cdf.percentile(5.0), 91}
+    assert_eq!{cdf.percentile(95.0), 235}
 
     let mut suite = Train::new(1..2001, 1.0);
     suite.update(&60);
@@ -90,4 +97,7 @@ fn suite_train_power_law() {
     assert_ulps_eq!{suite.get_pdf().mean(), 133.9974630807312, max_ulps = 4}
     assert_eq!{*suite.get_pdf().percentile(5.0), 91}
     assert_eq!{*suite.get_pdf().percentile(95.0), 243}
+    let cdf: Cdf<_> = suite.get_pdf().into();
+    assert_eq!{cdf.percentile(5.0), 91}
+    assert_eq!{cdf.percentile(95.0), 243}
 }

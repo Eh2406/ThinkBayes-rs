@@ -34,6 +34,11 @@ impl<V: Eq + Hash + Copy> Pmf<V> {
         self.d.keys().cloned().collect()
     }
 
+    /// Gets an unsorted sequence of (value, freq/prob) pairs.
+    pub fn items(&self) -> Vec<(V, f64)> {
+        self.d.iter().map(|(&val, &prb)| (val, prb)).collect()
+    }
+
     /// Returns the total of the frequencies/probabilities in the map.
     pub fn total(&self) -> f64 {
         self.d.values().fold(0.0, |s, p| s + p)
@@ -124,6 +129,10 @@ impl<V: Eq + Hash + Copy + Ord> Pmf<V> {
             }
         }
         items.last().expect("percentile of empty Pmf").0
+    }
+
+    pub fn make_cdf(&self) -> super::cdf::Cdf<V> {
+        self.into()
     }
 }
 
