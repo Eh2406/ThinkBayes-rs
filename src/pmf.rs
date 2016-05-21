@@ -100,6 +100,21 @@ impl<V: Eq + Hash + Copy> Pmf<V> {
 
         total
     }
+
+    // Returns the value with the highest probability.
+    //     Returns: float probability
+    pub fn maximum_likelihood(&self) -> &V {
+        use std::f64::NEG_INFINITY;
+        let mut max = NEG_INFINITY;
+        let mut max_v = None;
+        for (val, &prb) in self.d.iter() {
+            if prb >= max {
+                max_v = Some(val);
+                max = prb;
+            }
+        }
+        max_v.expect("maximum_likelihood on empty pdf")
+    }
 }
 
 impl<V: Eq + Hash + Copy + Into<f64>> Pmf<V> {
@@ -129,6 +144,15 @@ impl<V: Eq + Hash + Copy + Ord> Pmf<V> {
             }
         }
         items.last().expect("percentile of empty Pmf").0
+    }
+    /// Computes the central credible interval of a given Pmf.
+    ///     Note: this is not super efficient.  If you are planning
+    ///     to compute more than a few credible interval, compute the Cdf.
+    ///     percentage: float 0-100
+    ///     returns: value from the Pmf
+    pub fn credible_interval(&self, percentage: f64) -> (&V, &V) {
+        let p = (100.0 - percentage) / 2.0;
+        (self.percentile(p), self.percentile(100.0 - p))
     }
 
     pub fn make_cdf(&self) -> super::cdf::Cdf<V> {

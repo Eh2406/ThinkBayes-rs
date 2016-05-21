@@ -34,6 +34,14 @@ impl<V: Eq + Copy + Ord> Cdf<V> {
     pub fn percentile(&self, p: f64) -> V {
         self.value(p / 100.0)
     }
+
+    /// Computes the central credible interval of a given Pmf.
+    ///     percentage: float 0-100
+    ///     returns: value from the Pmf
+    pub fn credible_interval(&self, percentage: f64) -> (V, V) {
+        let p = (100.0 - percentage) / 2.0;
+        (self.percentile(p), self.percentile(100.0 - p))
+    }
 }
 
 impl<'a, V: Eq + Hash + Copy + Ord> From<&'a super::pmf::Pmf<V>> for Cdf<V> {

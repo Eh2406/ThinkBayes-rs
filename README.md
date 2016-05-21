@@ -43,4 +43,20 @@ Code from this section (dice.py) ended up in tests/dice.rs
 ###### 3.2  The locomotive problem and 3.3  What about that prior? ######
 Code from this section (train.py) ended up in tests/train.rs
 ###### 3.4  An alternative prior and 3.5  Credible intervals and 3.6  Cumulative distribution functions ######
-Code from this section tests/train2.rs. This is the code from the book, not from train3.py.
+Code from this section is in tests/train2.rs.
+This is the code from the book, not from train3.py.
+
+##### Chapter 4  More Estimation #####
+###### 4.1 - 4.4  The Euro problem ######
+Code from this section is in tests/euro.rs.
+This is the code from the book, not from euro.py.
+###### 4.5  The beta distribution ######
+This will wrap a beta distribution from [probability](https://github.com/stainless-steel/probability).
+But for now it is on the to do list.
+
+To Do List:
+-----
+- Go through the book.
+- Wrap distributions from [probability](https://github.com/stainless-steel/probability).
+- Be more consistent on use of &V vs. V us as_ref where possible.
+- Clean up formatting of doc strings. 
