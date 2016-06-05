@@ -20,7 +20,7 @@ Code from this section ended up as tests in src/pmf.rs
 ###### 2.2  The cookie problem ######
 Code from this section (cookie.py) ended up in tests/cookie.rs
 ###### 2.3  The Bayesian framework ######
-Rust dose not (yet 1.8.0) have class inheritance. Rust has traits or composition for code reuse. tests/cookie2.rs demonstrates using composition to extend Pmf.
+Rust dose not (yet 1.9.0) have class inheritance. Rust has traits or composition for code reuse. tests/cookie2.rs demonstrates using composition to extend Pmf.
 ###### 2.4  The Monty Hall problem ######
 test/monty.rs also uses composition.
 ###### 2.5  Encapsulating the framework ######
@@ -54,9 +54,13 @@ This is the code from the book, not from euro.py.
 This will wrap a beta distribution from [probability](https://github.com/stainless-steel/probability).
 But for now it is on the to do list.
 
+##### Chapter 5  Odds and Addends #####
+###### 5.4  Addends ######
+Code from this section is in tests/dungeons.rs.
+
 To Do List:
 -----
 - Go through the book.
 - Wrap distributions from [probability](https://github.com/stainless-steel/probability).
 - Be more consistent on use of &V vs. V us as_ref where possible.
-- Clean up formatting of doc strings. 
+- Clean up formatting of doc strings.

@@ -12,6 +12,8 @@ use std::hash::BuildHasherDefault;
 use fnv::FnvHasher;
 use std::borrow::Borrow;
 use std::cmp::Ord;
+use std::ops::Add;
+use rand::{thread_rng, Rng};
 
 /// Represents a probability mass function.
 ///
@@ -101,6 +103,26 @@ impl<V: Eq + Hash + Copy> Pmf<V> {
         total
     }
 
+    /// Chooses a random element from this PMF.
+    ///
+    /// Note: this is not very efficient.  If you plan to call
+    /// this more than a few times, consider converting to a CDF.
+    ///
+    /// Returns:
+    ///     value from the Pmf
+    pub fn random(&self) -> &V {
+        let target = thread_rng().gen_range(0.0, 1.0);
+        // maybe faster with lazy_static(distributions::Range)
+        let mut total = 0.0;
+        for (x, &p) in self.d.iter() {
+            total += p;
+            if total >= target {
+                return x;
+            }
+        }
+        panic!{"random: Pmf might not be normalized."}
+    }
+
     // Returns the value with the highest probability.
     //     Returns: float probability
     pub fn maximum_likelihood(&self) -> &V {
@@ -123,6 +145,60 @@ impl<V: Eq + Hash + Copy + Into<f64>> Pmf<V> {
     ///     float mean
     pub fn mean(&self) -> f64 {
         self.d.iter().fold(0.0, |s, (&x, &p)| s + x.into() * p)
+    }
+}
+
+impl<V: Eq + Hash + Copy + Add<Output = V>> Add for Pmf<V> {
+    type Output = Pmf<V>;
+    /// Computes the Pmf of the sum of values drawn from self and other.
+    ///
+    /// other: another Pmf
+    ///
+    /// returns: new Pmf
+    fn add(self, other: Pmf<V>) -> Pmf<V> {
+        &self + &other
+    }
+}
+
+impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<&'a Pmf<V>> for Pmf<V> {
+    type Output = Pmf<V>;
+    /// Computes the Pmf of the sum of values drawn from self and other.
+    ///
+    /// other: another Pmf
+    ///
+    /// returns: new Pmf
+    fn add(self, other: &'a Pmf<V>) -> Pmf<V> {
+        &self + other
+    }
+}
+
+impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<Pmf<V>> for &'a Pmf<V> {
+    type Output = Pmf<V>;
+    /// Computes the Pmf of the sum of values drawn from self and other.
+    ///
+    /// other: another Pmf
+    ///
+    /// returns: new Pmf
+    fn add(self, other: Pmf<V>) -> Pmf<V> {
+        &other + self
+    }
+}
+
+impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add for &'a Pmf<V> {
+    type Output = Pmf<V>;
+    /// Computes the Pmf of the sum of values drawn from self and other.
+    ///
+    /// other: another Pmf
+    ///
+    /// returns: new Pmf
+    fn add(self, other: &'a Pmf<V>) -> Pmf<V> {
+        let mut pmf = Pmf::new();
+        for (v1, p1) in self.d.iter() {
+            for (v2, p2) in other.d.iter() {
+                pmf.incr(*v1 + *v2, p1 * p2)
+            }
+        }
+        pmf
     }
 }
 

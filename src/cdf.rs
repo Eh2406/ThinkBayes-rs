@@ -2,6 +2,7 @@
 use std::cmp::Eq;
 use std::hash::Hash;
 use std::cmp::Ord;
+use rand::{thread_rng, Rng};
 
 /// Represents a cumulative distribution function.
 /// Attributes:
@@ -33,6 +34,22 @@ impl<V: Eq + Copy + Ord> Cdf<V> {
     ///     number value
     pub fn percentile(&self, p: f64) -> V {
         self.value(p / 100.0)
+    }
+
+    /// Chooses a random value from this distribution.
+    pub fn random(&self) -> V { ;
+        // maybe faster with lazy_static(distributions::Range)
+        self.value(thread_rng().gen_range(0.0, 1.0))
+    }
+
+
+    /// Generates a random sample from this distribution.
+    ///
+    /// n: usize length of the sample
+    /// returns: Vec<V>
+    pub fn sample(&self, n: usize) -> Vec<V> {
+        // O(n*log(len(cdf)))
+        (0..n).map(|_| self.random()).collect()
     }
 
     /// Computes the central credible interval of a given Pmf.

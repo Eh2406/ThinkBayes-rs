@@ -8,6 +8,8 @@
 // thinkbayes.py has all the code in one big file. So it cane be shared and imported in python.
 // Cargo means that it is straightforward to share split up, so I will do that.
 extern crate fnv;
+extern crate rand;
+extern crate itertools;
 
 #[cfg(test)]
 #[macro_use]
@@ -26,3 +28,6 @@ pub use suite::*;
 
 pub mod cdf;
 pub use cdf::*;
+
+pub mod simulation;
+pub use simulation::*;
