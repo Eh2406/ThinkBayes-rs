@@ -26,11 +26,11 @@ test/monty.rs also uses composition.
 ###### 2.5  Encapsulating the framework ######
 The "Template method pattern" and "abstract type" are perfect for trait inheritance.
 So we have a trait in std/suite.rs that need:
-- fn likelihood(&self, data: &D, hypo: &V) -> f64;
-- fn get_mut_pmf(&mut self) -> &mut Pmf<V>;
+- `fn likelihood(&self, data: &D, hypo: &V) -> f64;`
+- `fn get_mut_pmf(&mut self) -> &mut Pmf<V>;`
 
 And uses them to provide default implementation of:
-- fn update(&mut self, data: &D);
+- `fn update(&mut self, data: &D);`
 
 Code from this section (monty2.py) ended up in tests/monty2.rs
 
@@ -57,6 +57,10 @@ But for now it is on the to do list.
 ##### Chapter 5  Odds and Addends #####
 ###### 5.4  Addends ######
 Code from this section is in tests/dungeons.rs.
+###### 5.5  Maxima ######
+`random_max`, `sample_max` that are in the book are so slow that Prf. Downey
+dose not include them in thinkbayes.py. So I do not as well. The rest of this section is in tests/dungeons.rs.
+
 
 To Do List:
 -----

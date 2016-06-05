@@ -9,12 +9,31 @@ use rand::{thread_rng, Rng};
 ///     xs: sequence of values
 ///     ps: sequence of probabilities
 ///     label: string used as a graph label.
+#[derive(Clone)]
 pub struct Cdf<V: Eq + Copy + Ord> {
     xs: Vec<V>,
     ps: Vec<f64>,
 }
 
 impl<V: Eq + Copy + Ord> Cdf<V> {
+    /// Returns CDF(x), the probability that corresponds to value x.
+    ///
+    /// Args:
+    ///     x: number
+    ///
+    /// Returns:
+    ///     float probability
+    pub fn prob(&self, x: V) -> f64 {
+        if x < *self.xs.first().unwrap() {
+            0.0
+        } else if x > *self.xs.last().unwrap() {
+            1.0
+        } else {
+            let index = self.xs.binary_search(&x);
+            self.ps[index.unwrap_or_else(|x| x)]
+        }
+    }
+
     /// Returns InverseCDF(p), the value that corresponds to probability p.
     /// Args:
     ///     p: number in the range [0, 1]
@@ -59,13 +78,26 @@ impl<V: Eq + Copy + Ord> Cdf<V> {
         let p = (100.0 - percentage) / 2.0;
         (self.percentile(p), self.percentile(100.0 - p))
     }
+
+    // Computes the CDF of the maximum of k selections from this dist.
+    //
+    //     k: int
+    //
+    //     returns: new Cdf
+    pub fn max(&self, k: u32) -> Cdf<V> {
+        let mut cdf = self.clone();
+        for p in cdf.ps.iter_mut() {
+            *p = p.powi(k as i32);
+        }
+        cdf
+    }
 }
 
 impl<'a, V: Eq + Hash + Copy + Ord> From<&'a super::pmf::Pmf<V>> for Cdf<V> {
     fn from(pmf: &'a super::pmf::Pmf<V>) -> Self {
         let mut items = pmf.items();
         items.sort_by_key(|&(val, _)| val);
-        super::cdf::Cdf {
+        Cdf {
             xs: items.iter().map(|&(val, _)| val).collect(),
             ps: items.iter()
                 .scan(0.0, |s, &(_, prb)| {

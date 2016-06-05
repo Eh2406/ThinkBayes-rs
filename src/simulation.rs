@@ -13,7 +13,7 @@ use super::{Cdf, Pmf};
 
 /// Chooses a random value from each dist and returns the sum.
 ///
-/// dists: sequence of Cdf objects if V can be converted into f64.
+/// dists: sequence of Cdf objects.
 ///
 /// returns: numerical sum
 pub fn random_sum<'a, V, I>(dists: I) -> V

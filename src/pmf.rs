@@ -19,7 +19,8 @@ use rand::{thread_rng, Rng};
 ///
 /// Values can be any hashable type; probabilities are floating-point.
 /// Pmfs are not necessarily normalized.
-pub struct Pmf<V: Eq + Hash + Copy> {
+#[derive(Clone)]
+pub struct Pmf<V: Eq + Hash + Clone> {
     d: HashMap<V, f64, BuildHasherDefault<FnvHasher>>,
 }
 
