@@ -6,6 +6,10 @@
 // License: GNU GPLv3 http://www.gnu.org/licenses/gpl.html
 
 use std::f64::{INFINITY, NAN};
+use std::cmp::Eq;
+use std::hash::Hash;
+
+use super::Pmf;
 
 /// Computes odds for a given probability.
 /// Example: p=0.75 means 75 for and 25 against, or 3:1 odds in favor.
@@ -67,11 +71,7 @@ mod tests_odds {
 /// o: float odds, strictly positive else returns NAN
 /// Returns: float probability
 pub fn probability(o: f64) -> f64 {
-    if o < 0.0 {
-        NAN
-    } else {
-        o / (o + 1.0)
-    }
+    if o < 0.0 { NAN } else { o / (o + 1.0) }
 }
 
 #[cfg(test)]
@@ -108,4 +108,24 @@ mod tests_probability2 {
     fn probability2_in_the_mid2() {
         assert_ulps_eq!{probability2(1, 4), 0.20, max_ulps = 4}
     }
+}
+
+/// Make a mixture distribution.
+///
+/// Args:
+///   metapmf: Pmf that maps from Pmfs to probs.
+///   label: string label for the new Pmf.
+///
+/// Returns: Pmf object.
+pub fn make_mixture<'a, V, I>(metapmf: I) -> Pmf<V>
+    where V: 'a + Eq + Hash + Clone,
+          I: Iterator<Item = (&'a Pmf<V>, f64)>
+{
+    let mut mix = Pmf::new();
+    for (pmf, p1) in metapmf {
+        for (x, p2) in pmf.items() {
+            mix.incr(x, p1 * p2)
+        }
+    }
+    return mix;
 }

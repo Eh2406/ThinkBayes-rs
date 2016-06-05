@@ -9,6 +9,7 @@
 extern crate think_bayes;
 use think_bayes::pmf::*;
 use think_bayes::simulation::*;
+use think_bayes::utils::*;
 #[macro_use]
 extern crate approx;
 
@@ -78,4 +79,25 @@ fn suite_dungeons_max() {
     for &(v, _) in best_attr6.items().iter() {
         assert_ulps_eq!{best_attr6_cdf.prob(v), best_attr_cdf.prob(v), max_ulps = 9};
     }
+}
+
+#[test]
+fn suite_dungeons_mixtures() {
+    let dice = [(Die::new(4), 5.0),
+                (Die::new(6), 4.0),
+                (Die::new(8), 3.0),
+                (Die::new(12), 2.0),
+                (Die::new(20), 1.0)];
+    let mut mix = make_mixture(dice.iter().map(|&(ref d, p)| (d.get_pdf(), p)));
+    mix.normalize(1.0);
+    assert_ulps_eq!{mix.prob(&1, 0.0), 0.1672222222222222, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&4, 0.0), 0.1672222222222222, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&5, 0.0), 0.08388888888888889, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&6, 0.0), 0.08388888888888889, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&7, 0.0), 0.03944444444444444, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&8, 0.0), 0.03944444444444444, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&9, 0.0), 0.014444444444444446, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&12, 0.0), 0.014444444444444446, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&13, 0.0), 0.0033333333333333335, max_ulps = 4};
+    assert_ulps_eq!{mix.prob(&20, 0.0), 0.0033333333333333335, max_ulps = 4};
 }

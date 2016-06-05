@@ -60,7 +60,11 @@ Code from this section is in tests/dungeons.rs.
 ###### 5.5  Maxima ######
 `random_max`, `sample_max` that are in the book are so slow that Prf. Downey
 dose not include them in thinkbayes.py. So I do not as well. The rest of this section is in tests/dungeons.rs.
+###### 5.6  Mixtures ######
+Rust float types do not impl Eq and Hash because [floating point is hard](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html). This intern means that Cdf and Pmf can not impl Eq and Hash. If you think this a technicality having to do with Nan, note that `0.3 + 0.1 + 0.2 <> 0.3 + 0.2 + 0.1`. So if we have a `s: pdf = {0.1: 1, 0.2: 1, 0.3:1}` than `s + s + s` will have key a for `0.3 + 0.1 + 0.2` and a separate key `0.3 + 0.2 + 0.1`. That is just asking for trouble.
 
+This means that `make_mixture` can not take `Pmf<Pmf<V>>` as `MakeMixture` dose in python. So the rust version takes an Iterator or `(&Pmf<V>, f64)`
+Code from this section is in tests/dungeons.rs.
 
 To Do List:
 -----

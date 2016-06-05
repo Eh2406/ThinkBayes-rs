@@ -9,13 +9,13 @@ use rand::{thread_rng, Rng};
 ///     xs: sequence of values
 ///     ps: sequence of probabilities
 ///     label: string used as a graph label.
-#[derive(Clone)]
-pub struct Cdf<V: Eq + Copy + Ord> {
+#[derive(Clone, PartialEq)]
+pub struct Cdf<V: Eq + Clone + Ord> {
     xs: Vec<V>,
     ps: Vec<f64>,
 }
 
-impl<V: Eq + Copy + Ord> Cdf<V> {
+impl<V: Eq + Clone + Ord> Cdf<V> {
     /// Returns CDF(x), the probability that corresponds to value x.
     ///
     /// Args:
@@ -43,7 +43,7 @@ impl<V: Eq + Copy + Ord> Cdf<V> {
         }
         let index = self.ps
             .binary_search_by(|v| v.partial_cmp(&p).expect("Couldn't compare values"));
-        self.xs[index.unwrap_or_else(|x| x)]
+        self.xs[index.unwrap_or_else(|x| x)].clone()
     }
 
     /// Returns the value that corresponds to percentile p.
@@ -93,12 +93,12 @@ impl<V: Eq + Copy + Ord> Cdf<V> {
     }
 }
 
-impl<'a, V: Eq + Hash + Copy + Ord> From<&'a super::pmf::Pmf<V>> for Cdf<V> {
+impl<'a, V: Eq + Hash + Clone + Ord> From<&'a super::pmf::Pmf<V>> for Cdf<V> {
     fn from(pmf: &'a super::pmf::Pmf<V>) -> Self {
         let mut items = pmf.items();
-        items.sort_by_key(|&(val, _)| val);
+        items.sort_by_key(|&(ref val, _)| val.clone());
         Cdf {
-            xs: items.iter().map(|&(val, _)| val).collect(),
+            xs: items.iter().map(|&(ref val, _)| val.clone()).collect(),
             ps: items.iter()
                 .scan(0.0, |s, &(_, prb)| {
                     *s += prb;

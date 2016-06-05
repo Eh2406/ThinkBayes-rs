@@ -19,12 +19,12 @@ use rand::{thread_rng, Rng};
 ///
 /// Values can be any hashable type; probabilities are floating-point.
 /// Pmfs are not necessarily normalized.
-#[derive(Clone)]
+#[derive(Clone, PartialEq)]
 pub struct Pmf<V: Eq + Hash + Clone> {
     d: HashMap<V, f64, BuildHasherDefault<FnvHasher>>,
 }
 
-impl<V: Eq + Hash + Copy> Pmf<V> {
+impl<V: Eq + Hash + Clone> Pmf<V> {
     pub fn new() -> Pmf<V> {
         Pmf { d: HashMap::default() }
     }
@@ -39,7 +39,7 @@ impl<V: Eq + Hash + Copy> Pmf<V> {
 
     /// Gets an unsorted sequence of (value, freq/prob) pairs.
     pub fn items(&self) -> Vec<(V, f64)> {
-        self.d.iter().map(|(&val, &prb)| (val, prb)).collect()
+        self.d.iter().map(|(val, prb)| (val.clone(), prb.clone())).collect()
     }
 
     /// Returns the total of the frequencies/probabilities in the map.
@@ -149,7 +149,7 @@ impl<V: Eq + Hash + Copy + Into<f64>> Pmf<V> {
     }
 }
 
-impl<V: Eq + Hash + Copy + Add<Output = V>> Add for Pmf<V> {
+impl<V: Eq + Hash + Clone + Add<Output = V>> Add for Pmf<V> {
     type Output = Pmf<V>;
     /// Computes the Pmf of the sum of values drawn from self and other.
     ///
@@ -161,7 +161,7 @@ impl<V: Eq + Hash + Copy + Add<Output = V>> Add for Pmf<V> {
     }
 }
 
-impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<&'a Pmf<V>> for Pmf<V> {
+impl<'a, V: Eq + Hash + Clone + Add<Output = V>> Add<&'a Pmf<V>> for Pmf<V> {
     type Output = Pmf<V>;
     /// Computes the Pmf of the sum of values drawn from self and other.
     ///
@@ -173,7 +173,7 @@ impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<&'a Pmf<V>> for Pmf<V> {
     }
 }
 
-impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<Pmf<V>> for &'a Pmf<V> {
+impl<'a, V: Eq + Hash + Clone + Add<Output = V>> Add<Pmf<V>> for &'a Pmf<V> {
     type Output = Pmf<V>;
     /// Computes the Pmf of the sum of values drawn from self and other.
     ///
@@ -185,7 +185,7 @@ impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add<Pmf<V>> for &'a Pmf<V> {
     }
 }
 
-impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add for &'a Pmf<V> {
+impl<'a, V: Eq + Hash + Clone + Add<Output = V>> Add for &'a Pmf<V> {
     type Output = Pmf<V>;
     /// Computes the Pmf of the sum of values drawn from self and other.
     ///
@@ -196,14 +196,14 @@ impl<'a, V: Eq + Hash + Copy + Add<Output = V>> Add for &'a Pmf<V> {
         let mut pmf = Pmf::new();
         for (v1, p1) in self.d.iter() {
             for (v2, p2) in other.d.iter() {
-                pmf.incr(*v1 + *v2, p1 * p2)
+                pmf.incr(v1.clone() + v2.clone(), p1 * p2)
             }
         }
         pmf
     }
 }
 
-impl<V: Eq + Hash + Copy + Ord> Pmf<V> {
+impl<V: Eq + Hash + Clone + Ord> Pmf<V> {
     /// Computes a percentile of a given Pmf.
     ///     Note: this is not super efficient.  If you are planning
     ///     to compute more than a few percentiles, compute the Cdf.
@@ -213,7 +213,7 @@ impl<V: Eq + Hash + Copy + Ord> Pmf<V> {
         let p = percentage / 100.0;
         let mut total = 0.0;
         let mut items: Vec<(&V, &f64)> = self.d.iter().collect();
-        items.sort_by_key(|&(&val, _)| val);
+        items.sort_by_key(|&(ref val, _)| val.clone());
         for &(val, &prob) in &items {
             total += prob;
             if total >= p {
